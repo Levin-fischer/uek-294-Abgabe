@@ -1,0 +1,33 @@
+{
+  "/api/docs": {
+    "target": "http://localhost:3001",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api/docs": "/docs"
+    }
+  },
+  "/api": {
+    "target": "http://localhost:3001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/auth": {
+    "target": "http://localhost:38081",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/auth": ""
+    }
+  },
+  "/realms": {
+    "target": "http://localhost:38081",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/resources": {
+    "target": "http://localhost:38081",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
