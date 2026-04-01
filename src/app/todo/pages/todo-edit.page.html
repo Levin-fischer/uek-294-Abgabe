@@ -1,0 +1,14 @@
+@if (todo(); as item) {
+  <app-todo-form
+    [heading]="'Todo-Detail fur ' + item.name + '!'"
+    headingIcon="edit"
+    submitLabel="save"
+    [showGuid]="true"
+    [isAdmin]="authService.isAdmin()"
+    [showClosed]="true"
+    [initialValue]="item"
+    (saveClicked)="save($event)"
+    (cancelClicked)="cancel()"
+  ></app-todo-form>
+}
+
