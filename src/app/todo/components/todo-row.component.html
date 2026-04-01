@@ -1,0 +1,26 @@
+<div class="row" [class.even]="index() % 2 === 0">
+  <div class="cell name">{{ todo().name }}</div>
+  <div class="cell description">{{ todo().description }}</div>
+  <button
+    type="button"
+    class="cell state"
+    [class.closed]="todo().closed"
+    [class.open]="!todo().closed"
+    (click)="closedChanged.emit({ id: todo().id, checked: !todo().closed })"
+  >
+    <span class="state-content">
+      <mat-icon class="state-icon">{{ todo().closed ? 'close' : 'check' }}</mat-icon>
+      <span>{{ todo().closed ? 'closed' : 'open' }}</span>
+    </span>
+  </button>
+  <div class="cell actions">
+    <a mat-icon-button [routerLink]="['/todo/edit', todo().id]" aria-label="Edit todo">
+      <mat-icon>edit</mat-icon>
+    </a>
+    @if (isAdmin()) {
+      <button mat-icon-button type="button" aria-label="Delete todo" (click)="deleteClicked.emit(todo().id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    }
+  </div>
+</div>

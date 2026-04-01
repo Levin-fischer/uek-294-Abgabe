@@ -1,0 +1,22 @@
+<section class="frame">
+  <div class="panel">
+    <header class="title-bar">
+      <mat-icon>home</mat-icon>
+      <span>Home!</span>
+    </header>
+
+    <div class="body">
+      <section class="user-panel">
+        <h2>Benutzer</h2>
+        <p>{{ authService.authenticated() ? 'Angemeldet als ' + authService.username() : 'Nicht angemeldet' }}</p>
+      </section>
+
+      @if (!authService.authenticated()) {
+        <div class="login-wrap">
+          <button mat-flat-button class="login-pill" type="button" (click)="login()">Login</button>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
