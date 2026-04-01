@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { TodoFormComponent } from '../components/todo-form.component';
 import { TodoService } from '../data/todo.service';
 import { AuthService } from '../../auth/auth.service';
+import { TodoCreateDto } from '../../../api-gen/todo/models/todo-create-dto';
+import { NotificationService } from '../../shared/notification.service';
 
 @Component({
   selector: 'app-todo-new-page',
@@ -13,6 +15,7 @@ import { AuthService } from '../../auth/auth.service';
 export class TodoNewPageComponent {
   private readonly todoService = inject(TodoService);
   private readonly router = inject(Router);
+  private readonly notificationService = inject(NotificationService);
   protected readonly authService = inject(AuthService);
 
   protected async save(value: {
@@ -21,14 +24,19 @@ export class TodoNewPageComponent {
     closed: boolean;
     active: boolean;
   }): Promise<void> {
-    await this.todoService.create({
-      id: crypto.randomUUID(),
+    const dto: TodoCreateDto = {
+      guid: crypto.randomUUID(),
       name: value.name,
       description: value.description,
-      active: value.active,
-    });
+    };
+    const created = await this.todoService.create(dto);
+    if (!created) {
+      this.notificationService.error('Todo konnte nicht erstellt werden.');
+      return;
+    }
 
-    await this.todoService.load();
+    this.notificationService.success('Todo wurde erstellt.');
+    await this.todoService.load(this.authService.isAdmin());
     await this.router.navigateByUrl('/todo/list');
   }
 
