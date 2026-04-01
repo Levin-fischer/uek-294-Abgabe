@@ -26,7 +26,7 @@ export class TodoEditPageComponent {
       return;
     }
 
-    const item = await this.todoService.byId(id);
+    const item = await this.todoService.byId(id, this.authService.isAdmin());
     if (!item) {
       await this.router.navigateByUrl('/todo/list');
       return;
@@ -50,10 +50,14 @@ export class TodoEditPageComponent {
       name: value.name,
       description: value.description,
       closed: value.closed,
-      active: this.authService.isAdmin() ? value.active : item.active,
+      active: item.active,
     });
 
-    await this.todoService.load();
+    if (this.authService.isAdmin() && value.active !== item.active) {
+      await this.todoService.toggleActive(item.id, value.active);
+    }
+
+    await this.todoService.load(this.authService.isAdmin());
     await this.router.navigateByUrl('/todo/list');
   }
 

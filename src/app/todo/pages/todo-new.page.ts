@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { TodoFormComponent } from '../components/todo-form.component';
 import { TodoService } from '../data/todo.service';
 import { AuthService } from '../../auth/auth.service';
+import { TodoCreateDto } from '../../../api-gen/todo/models/todo-create-dto';
 
 @Component({
   selector: 'app-todo-new-page',
@@ -21,14 +22,14 @@ export class TodoNewPageComponent {
     closed: boolean;
     active: boolean;
   }): Promise<void> {
-    await this.todoService.create({
-      id: crypto.randomUUID(),
+    const dto: TodoCreateDto = {
+      guid: crypto.randomUUID(),
       name: value.name,
       description: value.description,
-      active: value.active,
-    });
+    };
+    await this.todoService.create(dto);
 
-    await this.todoService.load();
+    await this.todoService.load(this.authService.isAdmin());
     await this.router.navigateByUrl('/todo/list');
   }
 

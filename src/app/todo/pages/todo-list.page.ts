@@ -40,11 +40,11 @@ export class TodoListPageComponent {
   });
 
   async ngOnInit(): Promise<void> {
-    await this.todoService.load();
+    await this.todoService.load(this.authService.isAdmin());
   }
 
   protected async refresh(): Promise<void> {
-    await this.todoService.load();
+    await this.todoService.load(this.authService.isAdmin());
   }
 
   protected async toggleClosed(event: { id: string; checked: boolean }): Promise<void> {
@@ -72,7 +72,7 @@ export class TodoListPageComponent {
     }
 
     await this.todoService.remove(id);
-    await this.todoService.load();
+    await this.todoService.load(this.authService.isAdmin());
   }
 
   protected createNew(): void {

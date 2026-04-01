@@ -13,7 +13,7 @@ export const inactiveTodoGuard: CanActivateFn = async (route) => {
     return router.createUrlTree(['/todo/list']);
   }
 
-  const todo = await todoService.byId(id);
+  const todo = await todoService.byId(id, authService.isAdmin());
   if (!todo) {
     return router.createUrlTree(['/todo/list']);
   }
