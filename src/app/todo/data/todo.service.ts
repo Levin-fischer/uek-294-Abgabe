@@ -8,22 +8,7 @@ export class TodoService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/todos';
 
-  readonly items = signal<TodoItem[]>([
-    {
-      id: 'f8c5f42a-3f89-4830-9062-3ac47ce5833f',
-      name: 'Prepare milestone board',
-      description: 'Create milestones and map issues before implementation starts.',
-      closed: false,
-      active: true,
-    },
-    {
-      id: '189d22aa-8ce3-4480-b5ed-99d38967679b',
-      name: 'Draft README conclusion',
-      description: 'Write a personal project conclusion and attach it to the final issue.',
-      closed: true,
-      active: false,
-    },
-  ]);
+  readonly items = signal<TodoItem[]>([]);
   readonly loading = signal(false);
 
   async load(): Promise<void> {
