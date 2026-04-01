@@ -45,7 +45,8 @@ export class TodoService {
     );
   }
 
-  async create(dto: TodoCreateDto): Promise<void> {
+  async create(dto: TodoCreateDto): Promise<boolean> {
+    const previous = this.items();
     const optimistic: TodoItem = {
       id: dto.guid,
       name: dto.name,
@@ -60,12 +61,17 @@ export class TodoService {
       this.http.post<TodoReturnDto>(this.apiUrl, dto).pipe(catchError(() => of(undefined))),
     );
 
-    if (created) {
-      this.replaceLocal(this.toTodoItem(created));
+    if (!created) {
+      this.items.set(previous);
+      return false;
     }
+
+    this.replaceLocal(this.toTodoItem(created));
+    return true;
   }
 
-  async update(id: string, dto: TodoUpdateDto): Promise<void> {
+  async update(id: string, dto: TodoUpdateDto): Promise<boolean> {
+    const previous = this.items();
     const current = this.items().find((item) => item.id === id);
     const next = this.items().map((item) => (item.id === id ? { ...item, ...dto } : item));
     this.items.set(next);
@@ -82,21 +88,25 @@ export class TodoService {
       this.http.put<TodoReturnDto>(`${this.apiUrl}/${id}`, body).pipe(catchError(() => of(undefined))),
     );
 
-    if (updated) {
-      this.replaceLocal({
-        ...this.toTodoItem(updated),
-        active: current?.active ?? updated.active,
-      });
+    if (!updated) {
+      this.items.set(previous);
+      return false;
     }
+
+    this.replaceLocal({
+      ...this.toTodoItem(updated),
+      active: current?.active ?? updated.active,
+    });
+    return true;
   }
 
-  async toggleClosed(id: string, closed: boolean): Promise<void> {
+  async toggleClosed(id: string, closed: boolean): Promise<boolean> {
     const item = this.items().find((entry) => entry.id === id);
     if (!item) {
-      return;
+      return false;
     }
 
-    await this.update(id, {
+    return this.update(id, {
       name: item.name,
       description: item.description,
       closed,
@@ -104,12 +114,13 @@ export class TodoService {
     });
   }
 
-  async toggleActive(id: string, active: boolean): Promise<void> {
+  async toggleActive(id: string, active: boolean): Promise<boolean> {
     const item = this.items().find((entry) => entry.id === id);
     if (!item) {
-      return;
+      return false;
     }
 
+    const previous = this.items();
     const next = this.items().map((entry) => (entry.id === id ? { ...entry, active } : entry));
     this.items.set(next);
 
@@ -118,17 +129,31 @@ export class TodoService {
       this.http.patch<TodoReturnDto>(`${this.adminApiUrl}/${id}`, body).pipe(catchError(() => of(undefined))),
     );
 
-    if (updated) {
-      this.replaceLocal(this.toTodoItem(updated));
+    if (!updated) {
+      this.items.set(previous);
+      return false;
     }
+
+    this.replaceLocal(this.toTodoItem(updated));
+    return true;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string): Promise<boolean> {
+    const previous = this.items();
     this.items.set(this.items().filter((item) => item.id !== id));
 
-    await firstValueFrom(
-      this.http.delete<void>(`${this.adminApiUrl}/${id}`).pipe(catchError(() => of(undefined))),
+    const deleted = await firstValueFrom(
+      this.http
+        .delete<TodoReturnDto>(`${this.adminApiUrl}/${id}`)
+        .pipe(catchError(() => of(undefined))),
     );
+
+    if (deleted === undefined) {
+      this.items.set(previous);
+      return false;
+    }
+
+    return true;
   }
 
   private toTodoItem(todo: TodoReturnDto): TodoItem {

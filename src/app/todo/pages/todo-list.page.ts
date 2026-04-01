@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { TodoDeleteDialogComponent } from '../components/todo-delete-dialog.component';
 import { firstValueFrom } from 'rxjs';
+import { NotificationService } from '../../shared/notification.service';
 
 @Component({
   selector: 'app-todo-list-page',
@@ -29,6 +30,7 @@ export class TodoListPageComponent {
   protected readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly dialog = inject(MatDialog);
+  private readonly notificationService = inject(NotificationService);
 
   protected readonly todos = computed(() => {
     const all = this.todoService.items();
@@ -48,7 +50,15 @@ export class TodoListPageComponent {
   }
 
   protected async toggleClosed(event: { id: string; checked: boolean }): Promise<void> {
-    await this.todoService.toggleClosed(event.id, event.checked);
+    const updated = await this.todoService.toggleClosed(event.id, event.checked);
+    if (!updated) {
+      this.notificationService.error('Status konnte nicht aktualisiert werden.');
+      return;
+    }
+
+    this.notificationService.success(
+      event.checked ? 'Todo wurde als geschlossen markiert.' : 'Todo wurde wieder geoeffnet.',
+    );
   }
 
   protected async remove(id: string): Promise<void> {
@@ -71,7 +81,13 @@ export class TodoListPageComponent {
       return;
     }
 
-    await this.todoService.remove(id);
+    const removed = await this.todoService.remove(id);
+    if (!removed) {
+      this.notificationService.error('Todo konnte nicht geloescht werden.');
+      return;
+    }
+
+    this.notificationService.success('Todo wurde geloescht.');
     await this.todoService.load(this.authService.isAdmin());
   }
 
