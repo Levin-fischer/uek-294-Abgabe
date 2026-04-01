@@ -61,6 +61,23 @@ export class TodoListPageComponent {
     );
   }
 
+  protected async toggleActive(event: { id: string; checked: boolean }): Promise<void> {
+    if (!this.authService.isAdmin()) {
+      return;
+    }
+
+    const updated = await this.todoService.toggleActive(event.id, event.checked);
+    if (!updated) {
+      this.notificationService.error('Aktiv-Status konnte nicht aktualisiert werden.');
+      return;
+    }
+
+    this.notificationService.success(
+      event.checked ? 'Todo wurde aktiviert.' : 'Todo wurde deaktiviert.',
+    );
+    await this.todoService.load(true);
+  }
+
   protected async remove(id: string): Promise<void> {
     if (!this.authService.isAdmin()) {
       return;

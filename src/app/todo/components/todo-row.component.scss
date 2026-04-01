@@ -40,9 +40,6 @@
 }
 
 .state {
-  cursor: pointer;
-  border-top: 0;
-  font: inherit;
   color: #222;
 }
 
@@ -53,12 +50,6 @@
   gap: 0.3rem;
 }
 
-.state-icon {
-  width: 18px;
-  height: 18px;
-  font-size: 18px;
-}
-
 .state.open {
   background: #8df18b;
 }
@@ -67,15 +58,23 @@
   background: #ff8888;
 }
 
-.state.closed .state-icon {
-  color: #8b0000;
+.state .mdc-label,
+.actions .mdc-label {
+  color: inherit;
 }
 
 .actions {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 0.2rem;
 }
 
 .actions .mat-mdc-icon-button {
   color: #3f3f3f;
+}
+
+.active-toggle {
+  margin-right: 0.15rem;
 }
