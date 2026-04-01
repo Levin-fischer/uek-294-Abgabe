@@ -37,3 +37,21 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+
+.mat-mdc-snack-bar-container.app-snackbar-success {
+  --mdc-snackbar-container-color: #1f6f43;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.mat-mdc-snack-bar-container.app-snackbar-error {
+  --mdc-snackbar-container-color: #b3261e;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.mat-mdc-snack-bar-container.app-snackbar-info {
+  --mdc-snackbar-container-color: dodgerblue;
+  --mdc-snackbar-supporting-text-color: #fff;
+  --mat-snack-bar-button-color: #fff;
+}

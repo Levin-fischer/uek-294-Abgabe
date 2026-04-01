@@ -6,6 +6,7 @@ import Keycloak from 'keycloak-js';
 export class AuthService {
   private readonly platformId = inject(PLATFORM_ID);
   private keycloak?: Keycloak;
+  private readonly initPromise: Promise<void>;
 
   readonly initialized = signal(false);
   readonly authenticated = signal(false);
@@ -18,7 +19,11 @@ export class AuthService {
   );
 
   constructor() {
-    void this.init();
+    this.initPromise = this.init();
+  }
+
+  async ensureInitialized(): Promise<void> {
+    await this.initPromise;
   }
 
   async init(): Promise<void> {
@@ -49,12 +54,18 @@ export class AuthService {
   }
 
   async login(redirectPath = '/todo/list'): Promise<void> {
+    await this.ensureInitialized();
+
     if (!this.keycloak) {
       return;
     }
 
+    const redirectUri = redirectPath.startsWith('http')
+      ? redirectPath
+      : `${window.location.origin}${redirectPath}`;
+
     await this.keycloak.login({
-      redirectUri: `${window.location.origin}${redirectPath}`,
+      redirectUri,
     });
     this.syncFromKeycloak();
   }
@@ -71,6 +82,8 @@ export class AuthService {
   }
 
   async getAccessToken(): Promise<string | undefined> {
+    await this.ensureInitialized();
+
     if (!this.keycloak || !this.keycloak.authenticated) {
       this.syncFromKeycloak();
       return undefined;

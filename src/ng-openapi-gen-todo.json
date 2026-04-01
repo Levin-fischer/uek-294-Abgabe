@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "http://localhost:3001/docs-json",
+  "output": "src/api-gen/todo",
+  "ignoreUnusedModels": false,
+  "services": false,
+  "indexFile": false,
+  "modelIndex": "index"
+}
+
