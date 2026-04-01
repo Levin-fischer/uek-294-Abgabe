@@ -1,0 +1,29 @@
+<mat-toolbar class="toolbar">
+  <button mat-button routerLink="/">
+    <mat-icon>home</mat-icon>
+  </button>
+
+  @if (authenticated()) {
+    <button mat-button routerLink="/match" *kaHasRoles="['user', 'admin']">
+      <mat-icon>sports_tennis</mat-icon>
+      Match
+    </button>
+  }
+
+  <span class="spacer"></span>
+
+  <button mat-button routerLink="/about">
+    <mat-icon>info</mat-icon>
+  </button>
+
+  @if (authenticated()) {
+    <button mat-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      {{ profile()?.username }}
+    </button>
+  } @else {
+    <button mat-button (click)="login()">
+      <mat-icon>login</mat-icon>
+    </button>
+  }
+</mat-toolbar>
