@@ -33,21 +33,7 @@
         </mat-form-field>
 
         @if (showClosed()) {
-          <mat-button-toggle-group
-            class="status-toggle"
-            [hideSingleSelectionIndicator]="true"
-            [value]="form.controls.closed.value ? 'closed' : 'open'"
-            (change)="updateClosedState($event.value)"
-          >
-            <mat-button-toggle value="open" class="open-option">
-              <mat-icon>check</mat-icon>
-              <span>open</span>
-            </mat-button-toggle>
-            <mat-button-toggle value="closed" class="closed-option">
-              <mat-icon>close</mat-icon>
-              <span>closed</span>
-            </mat-button-toggle>
-          </mat-button-toggle-group>
+          <mat-checkbox formControlName="closed">Closed</mat-checkbox>
         }
 
         @if (isAdmin()) {

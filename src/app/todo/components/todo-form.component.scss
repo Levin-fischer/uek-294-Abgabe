@@ -69,42 +69,9 @@
   margin: -0.1rem 0 -0.35rem;
 }
 
-.status-toggle {
-  border: 2px solid #8f9caf;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.status-toggle mat-button-toggle {
-  min-width: 120px;
-}
-
-.status-toggle .open-option,
-.status-toggle .closed-option {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-}
-
-.status-toggle .open-option.mat-button-toggle-checked {
-  background: #8adf86;
-}
-
-.status-toggle .closed-option.mat-button-toggle-checked {
-  background: #ff8888;
-}
-
-.status-toggle .closed-option mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-}
-
-.status-toggle .open-option mat-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
+.mat-mdc-checkbox {
+  align-self: flex-start;
+  padding: 0.35rem 0.1rem 0;
 }
 
 .footer-actions {

@@ -1,16 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { catchError, firstValueFrom, map, of } from 'rxjs';
-import { ActivePatchDto } from '../../../api-gen/todo/models/active-patch-dto';
-import { TodoCreateDto } from '../../../api-gen/todo/models/todo-create-dto';
-import { TodoReturnDto } from '../../../api-gen/todo/models/todo-return-dto';
-import { TodoItem, TodoUpdateDto } from './todo.model';
+import { ActivePatchDto } from '../../../api-gen/todo';
+import { TodoCreateDto } from '../../../api-gen/todo';
+import { TodoReturnDto } from '../../../api-gen/todo';
+import { TodoItem } from './todo.model';
+
+interface TodoUpdatePayload {
+  name: string;
+  description: string;
+  closed: boolean;
+  active: boolean;
+}
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = '/api/todo/data';
   private readonly adminApiUrl = '/api/todo/admin';
+
 
   readonly items = signal<TodoItem[]>([]);
   readonly loading = signal(false);
@@ -70,7 +78,7 @@ export class TodoService {
     return true;
   }
 
-  async update(id: string, dto: TodoUpdateDto): Promise<boolean> {
+  async update(id: string, dto: TodoUpdatePayload): Promise<boolean> {
     const previous = this.items();
     const current = this.items().find((item) => item.id === id);
     const next = this.items().map((item) => (item.id === id ? { ...item, ...dto } : item));
