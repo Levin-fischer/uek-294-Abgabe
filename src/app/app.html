@@ -1,4 +1,45 @@
-<app-menu/>
-<div class="content">
-  <router-outlet/>
-</div>
+<mat-toolbar class="topbar">
+  <div class="nav-left">
+    <a mat-button class="menu-link" routerLink="/home" routerLinkActive="active-link">
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </a>
+
+    @if (authService.authenticated()) {
+      <a mat-button class="menu-link" routerLink="/todo/list" routerLinkActive="active-link">
+        <mat-icon>check_box</mat-icon>
+        <span>Todo</span>
+      </a>
+    }
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="nav-right">
+    <button mat-icon-button type="button" class="utility-circle" aria-label="Info" title="Home" (click)="goToHome()">
+      <mat-icon>info</mat-icon>
+    </button>
+    <button mat-icon-button type="button" class="utility-circle" aria-label="Apps" title="Todos" (click)="goToTodo()">
+      <mat-icon>apps</mat-icon>
+    </button>
+    <button mat-icon-button type="button" class="utility-circle" aria-label="Auth" title="Login / Logout" (click)="authShortcut()">
+      <mat-icon>key</mat-icon>
+    </button>
+
+    @if (authService.authenticated()) {
+      <button mat-flat-button class="auth-pill" type="button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>logout {{ authService.username() === 'admin' ? 'Admin User' : 'Standard User' }}</span>
+      </button>
+    } @else {
+      <button mat-flat-button class="auth-pill" type="button" (click)="login()">
+        <mat-icon>login</mat-icon>
+        <span>login</span>
+      </button>
+    }
+  </div>
+</mat-toolbar>
+
+<main class="content">
+  <router-outlet></router-outlet>
+</main>

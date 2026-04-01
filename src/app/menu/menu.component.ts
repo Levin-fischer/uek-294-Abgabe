@@ -17,7 +17,9 @@ export class MenuComponent {
   private readonly authService = inject(AuthService);
 
   protected authenticated = this.authService.authenticated;
-  protected profile = this.authService.profile;
+  protected username = this.authService.username;
+  protected profile = [];
+
   login() {
     void this.authService.login();
   }

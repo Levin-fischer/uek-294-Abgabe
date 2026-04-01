@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #ddd;
+}
+
+.topbar {
+  background: dodgerblue;
+  color: #031b33;
+  min-height: 84px;
+  padding: 0 1.6rem;
+}
+
+.active-link {
+  font-weight: 700;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.menu-link {
+  font-weight: 600;
+  border-radius: 999px;
+  min-width: 86px;
+}
+
+.menu-link mat-icon {
+  margin-right: 0.35rem;
+  font-size: 19px;
+  width: 19px;
+  height: 19px;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.utility-circle {
+  width: 34px;
+  height: 34px;
+  border: 2px solid #0f2e4f;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.utility-circle .mdc-icon-button__touch,
+.utility-circle .mdc-button__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.utility-circle:hover {
+  background: rgb(255 255 255 / 20%);
+}
+
+.utility-circle:focus-visible,
+.auth-pill:focus-visible,
+.menu-link:focus-visible {
+  outline: 3px solid #002f6c;
+  outline-offset: 2px;
+}
+
+.utility-circle mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  line-height: 1;
+}
+
+.auth-pill {
+  margin-left: 0.35rem;
+  border-radius: 999px;
+  background: #f2f3f7;
+  color: #0352b3;
+  font-weight: 700;
+  padding: 0.2rem 1.1rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 22%);
+}
+
+.auth-pill mat-icon {
+  margin-right: 0.3rem;
+}
+
+.content {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 1rem;
+}

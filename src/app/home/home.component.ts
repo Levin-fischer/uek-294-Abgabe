@@ -1,33 +1,20 @@
-import { Component } from '@angular/core';
-import { MatButton } from '@angular/material/button';
-import { RouterLink } from '@angular/router';
-import { MatCard, MatCardActions, MatCardContent, MatCardHeader } from '@angular/material/card';
-import { MatIcon } from '@angular/material/icon';
+import { Component, inject } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-home',
-  imports: [
-    MatButton,
-    RouterLink,
-    MatCard,
-    MatCardHeader,
-    MatCardContent,
-    MatCardActions,
-    MatIcon,
-  ],
+  standalone: true,
+  imports: [MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
+  protected readonly authService = inject(AuthService);
 
-  protected title = 'Das ist mein Projekt!';
-  protected text = 'Das ist mein Text';
-
-  doToggleText() {
-    if (this.text === 'Das ist mein Text') {
-      this.text = 'Das ist mein neuer Text';
-    } else {
-      this.text = 'Das ist mein Text';
-    }
+  protected async login(): Promise<void> {
+    await this.authService.login('/todo/list');
   }
 }
