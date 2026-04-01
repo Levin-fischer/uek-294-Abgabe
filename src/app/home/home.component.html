@@ -1,11 +1,22 @@
-<mat-card>
-  <mat-card-header>
-    <h2><mat-icon>home</mat-icon>&nbsp;{{ title }}</h2>
-  </mat-card-header>
-  <mat-card-content>
-    <button mat-raised-button (click)="doToggleText()">{{text}}</button>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-flat-button routerLink="/protected-api">protected-api demo page</button>
-  </mat-card-actions>
-</mat-card>
+<section class="frame">
+  <div class="panel">
+    <header class="title-bar">
+      <mat-icon>home</mat-icon>
+      <span>Home!</span>
+    </header>
+
+    <div class="body">
+      <section class="user-panel">
+        <h2>Benutzer</h2>
+        <p>{{ authService.authenticated() ? 'Angemeldet als ' + authService.username() : 'Nicht angemeldet' }}</p>
+      </section>
+
+      @if (!authService.authenticated()) {
+        <div class="login-wrap">
+          <button mat-flat-button class="login-pill" type="button" (click)="login()">Login</button>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+

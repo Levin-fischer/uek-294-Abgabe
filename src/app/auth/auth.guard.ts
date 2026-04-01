@@ -1,37 +1,15 @@
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthGuardData, createAuthGuard } from 'keycloak-angular';
+import { AuthService } from './auth.service';
 
-const isAccessAllowed = async (
-  route: ActivatedRouteSnapshot,
-  _: RouterStateSnapshot,
-  authData: AuthGuardData
-): Promise<boolean | UrlTree> => {
-  const { authenticated, grantedRoles, keycloak } = authData;
+export const authGuard: CanActivateFn = async () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  const requiredRoles: string | string[] | undefined = route.data['roles'];
-  if (!requiredRoles) {
-    return false;
-  }
-  const hasRequiredRole = (role: string | string[]): boolean => {
-    const requiredRoles = Array.isArray(role) ? role : [role];
-    return Object.values(grantedRoles.resourceRoles).some((roles) =>
-      requiredRoles.some((r) => roles.includes(r)),
-    );
-  };
-
-  if (authenticated && hasRequiredRole(requiredRoles)) {
+  await authService.getAccessToken();
+  if (authService.authenticated()) {
     return true;
   }
 
-  if (!authenticated) {
-    // login und dann redirect auf die aktuelle uri
-    await keycloak.login({ redirectUri: window.location.href });
-    return false;
-  }
-
-  const router = inject(Router);
-  return router.parseUrl('/forbidden');
+  return router.createUrlTree(['/home']);
 };
-
-export const canActivateAuthRole = createAuthGuard<CanActivateFn>(isAccessAllowed);

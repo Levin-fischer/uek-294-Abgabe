@@ -1,27 +1,24 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { from, switchMap } from 'rxjs';
+import { AuthService } from './auth.service';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const authTokenInterceptor: HttpInterceptorFn = (request, next) => {
   const authService = inject(AuthService);
-  const currentUrl = window.location.href;
-  if (authService.authenticated()) {
-    const token = authService.token();
-    const cloned = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      },
-    });
-    return next(cloned);
-  }
-  return next(req)
-    .pipe(
-      catchError((error) => {
-        if (error.status === 401) {
-          void authService.login({ redirectUri: currentUrl}); // Weiterleitung o.Ä.
-        }
-        return throwError(() => error);
-      })
-    );
+
+  return from(authService.getAccessToken()).pipe(
+    switchMap((token) => {
+      if (!token || !request.url.startsWith('/api')) {
+        return next(request);
+      }
+
+      return next(
+        request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+      );
+    }),
+  );
 };
