@@ -1,0 +1,81 @@
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  background: #fff;
+  min-height: 50px;
+}
+
+.row.even {
+  background: #ccc;
+}
+
+.cell {
+  min-height: 50px;
+  border-right: 2px solid #111;
+  border-bottom: 2px solid #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.5rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  min-width: 0;
+}
+
+.cell.description {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-top: 0.55rem;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  overflow-wrap: anywhere;
+}
+
+.cell:first-child {
+  border-left: 2px solid #111;
+}
+
+.state {
+  cursor: pointer;
+  border-top: 0;
+  font: inherit;
+  color: #222;
+}
+
+.state-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.state-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.state.open {
+  background: #8df18b;
+}
+
+.state.closed {
+  background: #ff8888;
+}
+
+.state.closed .state-icon {
+  color: #8b0000;
+}
+
+.actions {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.actions .mat-mdc-icon-button {
+  color: #3f3f3f;
+}

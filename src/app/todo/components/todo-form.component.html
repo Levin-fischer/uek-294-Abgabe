@@ -1,0 +1,71 @@
+<section class="frame">
+  <div class="panel">
+    <header class="title-bar">
+      <mat-icon>{{ headingIcon() }}</mat-icon>
+      <span>{{ heading() }}</span>
+    </header>
+
+    <div class="body">
+      <p class="helper">Mit * markierte Felder sind Pflichtfelder.</p>
+
+      <form class="todo-form" [formGroup]="form" (ngSubmit)="submit()">
+        @if (showGuid()) {
+          <div class="guid-box">
+            <span class="label">GUID</span>
+            <span>{{ initialValue().id }}</span>
+          </div>
+        }
+
+        <mat-form-field appearance="fill" class="light-field" hideRequiredMarker>
+          <mat-label>Name*</mat-label>
+          <input matInput formControlName="name" required />
+          @if (nameError()) {
+            <mat-error>{{ nameError() }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="light-field" hideRequiredMarker>
+          <mat-label>Beschreibung*</mat-label>
+          <textarea id="todo-description" matInput rows="3" formControlName="description" required></textarea>
+          @if (descriptionError()) {
+            <mat-error>{{ descriptionError() }}</mat-error>
+          }
+        </mat-form-field>
+
+        @if (showClosed()) {
+          <mat-button-toggle-group
+            class="status-toggle"
+            [hideSingleSelectionIndicator]="true"
+            [value]="form.controls.closed.value ? 'closed' : 'open'"
+            (change)="updateClosedState($event.value)"
+          >
+            <mat-button-toggle value="open" class="open-option">
+              <mat-icon>check</mat-icon>
+              <span>open</span>
+            </mat-button-toggle>
+            <mat-button-toggle value="closed" class="closed-option">
+              <mat-icon>close</mat-icon>
+              <span>closed</span>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        }
+
+        @if (isAdmin()) {
+          <mat-checkbox formControlName="active">Active</mat-checkbox>
+        }
+
+        <footer class="footer-actions">
+          <button mat-flat-button class="save-btn" type="submit">
+            <mat-icon>save</mat-icon>
+            <span>{{ submitLabel() }}</span>
+          </button>
+          <button mat-flat-button class="cancel-btn" type="button" (click)="cancelClicked.emit()">
+            <mat-icon>cancel</mat-icon>
+            <span>cancel</span>
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+</section>
+
