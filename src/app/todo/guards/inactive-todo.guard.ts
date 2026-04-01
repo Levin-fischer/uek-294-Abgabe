@@ -21,7 +21,7 @@ export const inactiveTodoGuard: CanActivateFn = async (route) => {
   }
 
   if (!todo.active && !authService.isAdmin()) {
-    notificationService.error('Dieses Todo ist nicht verfuegbar.');
+    notificationService.error('Dieses Todo ist nicht verfügbar.');
     return router.createUrlTree(['/todo/list']);
   }
 

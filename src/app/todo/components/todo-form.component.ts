@@ -1,7 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,7 +20,6 @@ interface TodoFormValue {
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatIconModule,
@@ -110,10 +108,6 @@ export class TodoFormComponent {
 
     const value = this.form.getRawValue();
     this.saveClicked.emit(value);
-  }
-
-  protected updateClosedState(nextValue: 'open' | 'closed'): void {
-    this.form.controls.closed.setValue(nextValue === 'closed');
   }
 }
 
