@@ -1,0 +1,31 @@
+<mat-toolbar>
+  @let authenticated = this.authenticated;
+  @let profile = this.profile;
+
+  <button mat-button routerLink="/home">
+    <mat-icon>home</mat-icon>
+    Home
+  </button>
+
+  @if (authenticated()) {
+    <button mat-button routerLink="/todo">
+      <mat-icon>check_box</mat-icon>
+      Todo
+    </button>
+  }
+
+  <span class="spacer"></span>
+
+  @if (authenticated) {
+    <button matButton="elevated" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <!--      Logout [{{ profile ? profile?.username : 'unbekannt' }}] -->
+    </button>
+  } @else {
+    <button matButton="elevated" (click)="login()">
+      <mat-icon>login</mat-icon>
+      Login
+    </button>
+  }
+</mat-toolbar>
+

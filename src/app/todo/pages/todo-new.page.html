@@ -1,0 +1,11 @@
+<app-todo-form
+  heading="New Todo!"
+  headingIcon="add"
+  submitLabel="save"
+  [showGuid]="false"
+  [isAdmin]="authService.isAdmin()"
+  [showClosed]="false"
+  (saveClicked)="save($event)"
+  (cancelClicked)="cancel()"
+></app-todo-form>
+
