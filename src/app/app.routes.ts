@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './auth/auth.guard';
+import { inactiveTodoGuard } from './todo/guards/inactive-todo.guard';
 
 export const routes: Routes = [
   {
@@ -19,8 +20,19 @@ export const routes: Routes = [
   {
     path: 'todo/list',
     canActivate: [authGuard],
+    loadComponent: () => import('./todo/pages/todo-list.page').then((m) => m.TodoListPageComponent),
+  },
+  {
+    path: 'todo/new',
+    canActivate: [authGuard],
     loadComponent: () =>
-      import('./todo/pages/todo-list.page').then((m) => m.TodoListPageComponent),
+      import('./todo/pages/todo-new.page').then((m) => m.TodoNewPageComponent),
+  },
+  {
+    path: 'todo/edit/:id',
+    canActivate: [authGuard, inactiveTodoGuard],
+    loadComponent: () =>
+      import('./todo/pages/todo-edit.page').then((m) => m.TodoEditPageComponent),
   },
   {
     path: '**',
