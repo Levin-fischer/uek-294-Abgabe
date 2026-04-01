@@ -1,0 +1,21 @@
+.title-strip {
+  background: dodgerblue;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 86px;
+  padding: 0 1rem;
+}
+
+.title-strip span {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.title-strip mat-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+}
+

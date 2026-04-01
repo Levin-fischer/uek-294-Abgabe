@@ -1,0 +1,43 @@
+<section class="todo-list-page">
+  <div class="frame">
+    <div class="panel">
+      <app-todo-header title="Todos"></app-todo-header>
+
+      <div class="table-wrap">
+        <div class="column-header">
+          <div>Titel</div>
+          <div>Description</div>
+          <div>State</div>
+          <div class="actions-head">
+            <button mat-icon-button type="button" aria-label="New" (click)="createNew()">
+              <mat-icon>add</mat-icon>
+            </button>
+
+            <button mat-icon-button type="button" aria-label="Refresh" (click)="refresh()">
+              <mat-icon>refresh</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        @if (todoService.loading()) {
+          <div class="loading-wrap">
+            <mat-spinner diameter="34"></mat-spinner>
+          </div>
+        } @else {
+          <div class="rows">
+            @for (todo of todos(); track todo.id; let i = $index) {
+              <app-todo-row
+                [todo]="todo"
+                [index]="i"
+                [isAdmin]="authService.isAdmin()"
+                (closedChanged)="toggleClosed($event)"
+                (deleteClicked)="remove($event)"
+              ></app-todo-row>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
