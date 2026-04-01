@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-header>
+    <h2><mat-icon>home</mat-icon>&nbsp;{{ title }}</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <button mat-raised-button (click)="doToggleText()">{{text}}</button>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button routerLink="/protected-api">protected-api demo page</button>
+  </mat-card-actions>
+</mat-card>
